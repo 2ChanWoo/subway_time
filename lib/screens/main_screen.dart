@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:subway_time/controllers/subway_controller.dart';
-import 'package:subway_time/models/subways.dart';
+import 'package:subway_time/models/geo_subways.dart';
 import 'package:http/http.dart' as http;
 
 class MainScreen extends StatelessWidget {
@@ -62,7 +62,7 @@ class MainScreen extends StatelessWidget {
               color: Colors.purpleAccent,
               child: Text('API Test!!'),
               onPressed: () async {
-                await cont.fetchSubwayTime(131);
+                await cont.fetchSubwayTime(102);
                 
                 Firestore.instance.collection('subways')
                     .document(cont.upSub.result.stationName).setData({
@@ -73,12 +73,12 @@ class MainScreen extends StatelessWidget {
                   'laneCity': cont.upSub.result.laneCity,
                   'upWay': cont.upSub.result.upWay,
                   'upwardOrdList': cont.upSub.result.ordList.up.toMapList(),
-//                  'upwardSatList': cont.upSub.result.satList,
-//                  'upwardSunList': cont.upSub.result.sunList,
-                  'downWay': cont.downSub.result.downWay,
-//                  'downwardOrdList': cont.downSub.result.ordList,
-//                  'downwardSatList': cont.downSub.result.satList,
-//                  'downwardSunList': cont.downSub.result.sunList,
+                  'upwardSatList': cont.upSub.result.satList.up.toMapList(),
+                  'upwardSunList': cont.upSub.result.sunList.up.toMapList(),
+                  'downWay': cont.upSub.result.downWay,
+                  'downwardOrdList': cont.upSub.result.ordList.down.toMapList(),
+                  'downwardSatList': cont.upSub.result.satList.down.toMapList(),
+                  'downwardSunList': cont.upSub.result.sunList.down.toMapList(),
                 });
                 /////////////// 최종은 저장해둔subway.json으로 좌표까지 남겨놔야한다~
               }),

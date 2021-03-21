@@ -4,24 +4,23 @@
 
 import 'dart:convert';
 
-UpwardSubway upwardSubwayFromJson(String str) =>
-    UpwardSubway.fromJson(json.decode(str));
+Subway upwardSubwayFromJson(String str) =>
+    Subway.fromJson(json.decode(str));
 
-String upwardSubwayToJson(UpwardSubway data) => json.encode(data.toJson());
+String upwardSubwayToJson(Subway data) => json.encode(data.toJson());
 
-class UpwardSubway {
-  UpwardSubway({
+class Subway {
+  Subway({
     this.result,
   });
 
   Result result;
 
-  factory UpwardSubway.fromJson(Map<String, dynamic> json) {
-
+  factory Subway.fromJson(Map<String, dynamic> json) {
     if (json == null || json['error'] != null)
       print('-----ERROR----- extractedData ::::: $json');
 
-    return UpwardSubway(
+    return Subway(
       result: Result.fromJson(json["result"]),
     );
   }
@@ -56,21 +55,20 @@ class Result {
   int stationId; //역코드
   String stationName; //역이름
 
-
   factory Result.fromJson(Map<String, dynamic> json) {
-
     return Result(
-        type: json["type"],
-        laneName: json["laneName"],
-        laneCity: json["laneCity"],
-        ordList: OrdListClass.fromJson(json["OrdList"]),
-        satList: OrdListClass.fromJson(json["SatList"]),
-        sunList: OrdListClass.fromJson(json["SunList"]),
-        upWay: json["upWay"],
-        downWay: json["downWay"],
-        stationId: json["stationID"],
-        stationName: json["stationName"],
-      );}
+      type: json["type"],
+      laneName: json["laneName"],
+      laneCity: json["laneCity"],
+      ordList: OrdListClass.fromJson(json["OrdList"]),
+      satList: OrdListClass.fromJson(json["SatList"]),
+      sunList: OrdListClass.fromJson(json["SunList"]),
+      upWay: json["upWay"],
+      downWay: json["downWay"],
+      stationId: json["stationID"],
+      stationName: json["stationName"],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "type": type,
@@ -89,16 +87,20 @@ class Result {
 class OrdListClass {
   OrdListClass({
     this.up,
+    this.down,
   });
 
   Up up;
+  Up down;
 
   factory OrdListClass.fromJson(Map<String, dynamic> json) => OrdListClass(
         up: Up.fromJson(json["up"]),
+        down: Up.fromJson(json["down"]),
       );
 
   Map<String, dynamic> toJson() => {
         "up": up.toJson(),
+        "down": down.toJson(),
       };
 }
 
@@ -109,6 +111,7 @@ class Up {
 
   List<Time> time;
 
+  //추가!! 파베에서는 클래스형식이 없으니, Map형태로 반환하기 위해서~!
   List<Map> toMapList() {
     List<Map> mapTime = [];
     time.forEach((e) {
@@ -156,12 +159,4 @@ class Time {
         "expList": expList == null ? null : expList,
       };
 
-  //추가!! 파베에서는 클래스형식이 없으니, Map형태로 반환하기 위해서~!
-  Map toMap() {
-    return {
-      "Idx": idx,
-      "list": list,
-      "expList": expList == null ? null : expList,
-    };
-  }
 }
