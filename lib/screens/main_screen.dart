@@ -62,7 +62,7 @@ class MainScreen extends StatelessWidget {
               color: Colors.purpleAccent,
               child: Text('API Test!!'),
               onPressed: () async {
-                await cont.fetchSubwayTime(302);
+                await cont.fetchSubwayTime(131);
                 
                 Firestore.instance.collection('subways')
                     .document(cont.upSub.result.stationName).setData({
@@ -72,13 +72,13 @@ class MainScreen extends StatelessWidget {
                   'laneName': cont.upSub.result.laneName,
                   'laneCity': cont.upSub.result.laneCity,
                   'upWay': cont.upSub.result.upWay,
-                  'upwardOrdList': cont.upSub.result.ordList,
-                  'upwardSatList': cont.upSub.result.satList,
-                  'upwardSunList': cont.upSub.result.sunList,
+                  'upwardOrdList': cont.upSub.result.ordList.up.toMapList(),
+//                  'upwardSatList': cont.upSub.result.satList,
+//                  'upwardSunList': cont.upSub.result.sunList,
                   'downWay': cont.downSub.result.downWay,
-                  'downwardOrdList': cont.downSub.result.ordList,
-                  'downwardSatList': cont.downSub.result.satList,
-                  'downwardSunList': cont.downSub.result.sunList,
+//                  'downwardOrdList': cont.downSub.result.ordList,
+//                  'downwardSatList': cont.downSub.result.satList,
+//                  'downwardSunList': cont.downSub.result.sunList,
                 });
                 /////////////// 최종은 저장해둔subway.json으로 좌표까지 남겨놔야한다~
               }),

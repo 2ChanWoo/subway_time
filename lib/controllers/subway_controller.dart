@@ -14,6 +14,7 @@ class SubwayController {
     var upResponse = await http.get(_upUrl);
 
     if (upResponse.statusCode == 200) {
+      print('body >>>>> ${upResponse.body}');
       upSub = upwardSubwayFromJson(upResponse.body);
     } else {
       throw Exception('>>>>>>>>>>>> Failed to load Json <<<<<<<<<<<<<');
@@ -24,7 +25,7 @@ class SubwayController {
     var downResponse = await http.get(_downUrl);
 
     if (downResponse.statusCode == 200) {
-      upSub = upwardSubwayFromJson(downResponse.body);
+      downSub = downwardSubwayFromJson(downResponse.body);
     } else {
       throw Exception('>>>>>>>>>>>> Failed to load Json <<<<<<<<<<<<<');
     }

@@ -56,7 +56,10 @@ class Result {
   int stationId; //역코드
   String stationName; //역이름
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+
+  factory Result.fromJson(Map<String, dynamic> json) {
+
+    return Result(
         type: json["type"],
         laneName: json["laneName"],
         laneCity: json["laneCity"],
@@ -67,7 +70,7 @@ class Result {
         downWay: json["downWay"],
         stationId: json["stationID"],
         stationName: json["stationName"],
-      );
+      );}
 
   Map<String, dynamic> toJson() => {
         "type": type,
@@ -106,6 +109,21 @@ class Up {
 
   List<Time> time;
 
+  List<Map> toMapList() {
+    List<Map> mapTime = [];
+    time.forEach((e) {
+      print('idx ${e.idx}');
+      mapTime.add({
+        'idx': e.idx,
+        'list': e.list,
+        'expList': e.expList,
+      });
+    });
+
+    print('maptime >>>>>>>>>>>>>>  $mapTime');
+    return mapTime;
+  }
+
   factory Up.fromJson(Map<String, dynamic> json) => Up(
         time: List<Time>.from(json["time"].map((x) => Time.fromJson(x))),
       );
@@ -137,4 +155,13 @@ class Time {
         "list": list,
         "expList": expList == null ? null : expList,
       };
+
+  //추가!! 파베에서는 클래스형식이 없으니, Map형태로 반환하기 위해서~!
+  Map toMap() {
+    return {
+      "Idx": idx,
+      "list": list,
+      "expList": expList == null ? null : expList,
+    };
+  }
 }
