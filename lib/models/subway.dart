@@ -21,7 +21,7 @@ class Subway {
 
   factory Subway.fromJson(Map<String, dynamic> json) {
     if (json == null || json['error'] != null) {
-      print('-----ERROR----- Subway.fromJson ::::: $json');
+      //print('-----ERROR----- Subway.fromJson ::::: $json');
 
       return Subway(
         result: Result.fromJson(null),
@@ -64,8 +64,7 @@ class Result {
 
   factory Result.fromJson(Map<String, dynamic> json) {
     if (json == null || json['error'] != null) {
-      print(
-          '-----ERROR-----  Result.fromJson ::::: $json'); //udemy_provider 프로젝트에서 사용함.
+      //print('-----ERROR-----  Result.fromJson ::::: $json'); //udemy_provider 프로젝트에서 사용함.
 
       return Result(
         type: 99,
@@ -120,8 +119,7 @@ class OrdListClass {
 
   factory OrdListClass.fromJson(Map<String, dynamic> json) {
     if (json == null || json['error'] != null) {
-      print(
-          '-----ERROR-----  OrdListClass.fromJson ::::: $json'); //udemy_provider 프로젝트에서 사용함.
+      //print('-----ERROR-----  OrdListClass.fromJson ::::: $json'); //udemy_provider 프로젝트에서 사용함.
       return OrdListClass(
         up: Up.fromJson(null),
         down: Up.fromJson(null),
@@ -165,7 +163,7 @@ class Up {
 
   factory Up.fromJson(Map<String, dynamic> json) {
     if (json == null || json['error'] != null) {
-      print('-----ERROR-----  Up.fromJson ::::: $json');
+      //print('-----ERROR-----  Up.fromJson ::::: $json');
 
       return Up(
         time: [Time.fromJson(null)], //어차피 널이니까. null['time']하면 에러날거같아서..
@@ -195,7 +193,7 @@ class Time {
 
   factory Time.fromJson(Map<String, dynamic> json) {
     if (json == null || json['error'] != null) {
-      print('-----ERROR-----  Time.fromJson ::::: $json');
+      //print('-----ERROR-----  Time.fromJson ::::: $json');
 
       return Time(
         idx: 99,

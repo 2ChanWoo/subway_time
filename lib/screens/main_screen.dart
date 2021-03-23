@@ -62,37 +62,46 @@ class MainScreen extends StatelessWidget {
               color: Colors.purpleAccent,
               child: Text('API Test!!'),
               onPressed: () async {
+                for (int i = 133; i < 134; i++) {
+                  print(i);
+                  if (await cont.fetchSubwayTime(i)) {
+                    String yuk = '';
+                    if(cont.upSub.result.stationName[cont.upSub.result.stationName.length-1] != '역')
+                      yuk='역';
 
-                if(await cont.fetchSubwayTime(100)) {
-                  var getSubway = GeoSubways.gSubways.firstWhere((e) {
-                    return e['subwayStationName'] == cont.upSub.result.stationName + '역';  // bool 타입 리턴받아서 요렇게 ㅎ
-                  });
-                  //print('받아온 ~~~~ ${getSubway['subwayStationName']??'널?!'}');
+                    var getSubway = GeoSubways.gSubways.firstWhere((e) {
+                      return e['subwayStationName'] ==
+                          cont.upSub.result.stationName +
+                              yuk; // bool 타입 리턴받아서 요렇게 ㅎ
+                    });
+                    print('받아온 ~~~~ ${getSubway['subwayStationName']??'널?!'}');
 
-                  Firestore.instance.collection('subways')
-                      .document(cont.upSub.result.stationName).setData({
-                    'stationName': cont.upSub.result.stationName,
-                    'stationId': cont.upSub.result.stationId,
-                    'type': cont.upSub.result.type,
-                    'laneName': cont.upSub.result.laneName,
-                    'laneCity': cont.upSub.result.laneCity,
-                    'upWay': cont.upSub.result.upWay,
-                    'upwardOrdList': cont.upSub.result.ordList.up.toMapList(),
-                    'upwardSatList': cont.upSub.result.satList.up.toMapList(),
-                    'upwardSunList': cont.upSub.result.sunList.up.toMapList(),
-                    'downWay': cont.upSub.result.downWay,
-                    'downwardOrdList': cont.upSub.result.ordList.down
-                        .toMapList(),
-                    'downwardSatList': cont.upSub.result.satList.down
-                        .toMapList(),
-                    'downwardSunList': cont.upSub.result.sunList.down
-                        .toMapList(),
-                    'update': Timestamp.now(),
-                    'latitude': getSubway['latitude']??0.0,
-                    'longitude': getSubway['longitude']??0.0,
-                  });
+                    Firestore.instance
+                        .collection('subways')
+                        .document(cont.upSub.result.stationName)
+                        .setData({
+                      'stationName': cont.upSub.result.stationName,
+                      'stationId': cont.upSub.result.stationId,
+                      'type': cont.upSub.result.type,
+                      'laneName': cont.upSub.result.laneName,
+                      'laneCity': cont.upSub.result.laneCity,
+                      'upWay': cont.upSub.result.upWay,
+                      'upwardOrdList': cont.upSub.result.ordList.up.toMapList(),
+                      'upwardSatList': cont.upSub.result.satList.up.toMapList(),
+                      'upwardSunList': cont.upSub.result.sunList.up.toMapList(),
+                      'downWay': cont.upSub.result.downWay,
+                      'downwardOrdList':
+                          cont.upSub.result.ordList.down.toMapList(),
+                      'downwardSatList':
+                          cont.upSub.result.satList.down.toMapList(),
+                      'downwardSunList':
+                          cont.upSub.result.sunList.down.toMapList(),
+                      'update': Timestamp.now(),
+                      'latitude': getSubway['latitude'] ?? 0.0,
+                      'longitude': getSubway['longitude'] ?? 0.0,
+                    });
+                  }
                 }
-                /////////////// 최종은 저장해둔subway.json으로 좌표까지 남겨놔야한다~
               }),
         ],
       ),
