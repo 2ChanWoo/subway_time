@@ -15,7 +15,7 @@ class MainScreen extends StatelessWidget {
           desiredAccuracy: LocationAccuracy.best);
       print(currentPosition);
 
-      Subways.subways.forEach((e) {
+      GeoSubways.gSubways.forEach((e) {
         double lat = e['latitude'];
         double lon = e['longitude'];
         double distance = Geolocator.distanceBetween(
@@ -62,24 +62,36 @@ class MainScreen extends StatelessWidget {
               color: Colors.purpleAccent,
               child: Text('API Test!!'),
               onPressed: () async {
-                await cont.fetchSubwayTime(102);
-                
-                Firestore.instance.collection('subways')
-                    .document(cont.upSub.result.stationName).setData({
-                  'stationName': cont.upSub.result.stationName,
-                  'stationId': cont.upSub.result.stationId,
-                  'type' : cont.upSub.result.type,
-                  'laneName': cont.upSub.result.laneName,
-                  'laneCity': cont.upSub.result.laneCity,
-                  'upWay': cont.upSub.result.upWay,
-                  'upwardOrdList': cont.upSub.result.ordList.up.toMapList(),
-                  'upwardSatList': cont.upSub.result.satList.up.toMapList(),
-                  'upwardSunList': cont.upSub.result.sunList.up.toMapList(),
-                  'downWay': cont.upSub.result.downWay,
-                  'downwardOrdList': cont.upSub.result.ordList.down.toMapList(),
-                  'downwardSatList': cont.upSub.result.satList.down.toMapList(),
-                  'downwardSunList': cont.upSub.result.sunList.down.toMapList(),
-                });
+
+                if(await cont.fetchSubwayTime(100)) {
+                  var getSubway = GeoSubways.gSubways.firstWhere((e) {
+                    return e['subwayStationName'] == cont.upSub.result.stationName + '역';  // bool 타입 리턴받아서 요렇게 ㅎ
+                  });
+                  //print('받아온 ~~~~ ${getSubway['subwayStationName']??'널?!'}');
+
+                  Firestore.instance.collection('subways')
+                      .document(cont.upSub.result.stationName).setData({
+                    'stationName': cont.upSub.result.stationName,
+                    'stationId': cont.upSub.result.stationId,
+                    'type': cont.upSub.result.type,
+                    'laneName': cont.upSub.result.laneName,
+                    'laneCity': cont.upSub.result.laneCity,
+                    'upWay': cont.upSub.result.upWay,
+                    'upwardOrdList': cont.upSub.result.ordList.up.toMapList(),
+                    'upwardSatList': cont.upSub.result.satList.up.toMapList(),
+                    'upwardSunList': cont.upSub.result.sunList.up.toMapList(),
+                    'downWay': cont.upSub.result.downWay,
+                    'downwardOrdList': cont.upSub.result.ordList.down
+                        .toMapList(),
+                    'downwardSatList': cont.upSub.result.satList.down
+                        .toMapList(),
+                    'downwardSunList': cont.upSub.result.sunList.down
+                        .toMapList(),
+                    'update': Timestamp.now(),
+                    'latitude': getSubway['latitude']??0.0,
+                    'longitude': getSubway['longitude']??0.0,
+                  });
+                }
                 /////////////// 최종은 저장해둔subway.json으로 좌표까지 남겨놔야한다~
               }),
         ],

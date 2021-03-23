@@ -1,7 +1,7 @@
 //json을 받아오는 것 보다 이렇게 하는게 더 효율적일 것 같아서.
 //지하철역이 한달마다 지어지는 것 도 아니고, 해서.
-class Subways {
-  static List<Map<String, dynamic>> subways = [{"subwayStationName":"낙성대역","subwayArea":"수도권","latitude":37.47708963,"longitude":126.9635058,"line":"02호선"},
+class GeoSubways {
+  static List<Map<String, dynamic>> gSubways = [{"subwayStationName":"낙성대역","subwayArea":"수도권","latitude":37.47708963,"longitude":126.9635058,"line":"02호선"},
   {"subwayStationName":"구룡역","subwayArea":"수도권","latitude":37.48702744,"longitude":127.0594749,"line":"분당선"},
   {"subwayStationName":"서울대입구역","subwayArea":"수도권","latitude":37.4812845,"longitude":126.9526951,"line":"02호선"},
   {"subwayStationName":"불광역","subwayArea":"수도권","latitude":37.61004419,"longitude":126.9303022,"line":"03호선"},

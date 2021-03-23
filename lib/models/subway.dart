@@ -4,8 +4,11 @@
 
 import 'dart:convert';
 
-Subway upwardSubwayFromJson(String str) =>
-    Subway.fromJson(json.decode(str));
+Subway upwardSubwayFromJson(String str) {
+  var decodedJson = json.decode(str);
+
+  return Subway.fromJson(json.decode(str));
+}
 
 String upwardSubwayToJson(Subway data) => json.encode(data.toJson());
 
@@ -17,9 +20,13 @@ class Subway {
   Result result;
 
   factory Subway.fromJson(Map<String, dynamic> json) {
-    if (json == null || json['error'] != null)
-      print('-----ERROR----- extractedData ::::: $json');
+    if (json == null || json['error'] != null) {
+      print('-----ERROR----- Subway.fromJson ::::: $json');
 
+      return Subway(
+        result: Result.fromJson(null),
+      );
+    }
     return Subway(
       result: Result.fromJson(json["result"]),
     );
@@ -56,17 +63,35 @@ class Result {
   String stationName; //역이름
 
   factory Result.fromJson(Map<String, dynamic> json) {
+    if (json == null || json['error'] != null) {
+      print(
+          '-----ERROR-----  Result.fromJson ::::: $json'); //udemy_provider 프로젝트에서 사용함.
+
+      return Result(
+        type: 99,
+        laneName: '',
+        laneCity: '',
+        ordList: OrdListClass.fromJson(null),
+        satList: OrdListClass.fromJson(null),
+        sunList: OrdListClass.fromJson(null),
+        upWay: '',
+        downWay: '',
+        stationId: 99999,
+        stationName: '',
+      );
+    }
+
     return Result(
-      type: json["type"],
-      laneName: json["laneName"],
-      laneCity: json["laneCity"],
+      type: json["type"] ?? 99,
+      laneName: json["laneName"] ?? '',
+      laneCity: json["laneCity"] ?? '',
       ordList: OrdListClass.fromJson(json["OrdList"]),
       satList: OrdListClass.fromJson(json["SatList"]),
       sunList: OrdListClass.fromJson(json["SunList"]),
-      upWay: json["upWay"],
-      downWay: json["downWay"],
-      stationId: json["stationID"],
-      stationName: json["stationName"],
+      upWay: json["upWay"] ?? '',
+      downWay: json["downWay"] ?? '',
+      stationId: json["stationID"] ?? 99999,
+      stationName: json["stationName"] ?? '',
     );
   }
 
@@ -93,10 +118,21 @@ class OrdListClass {
   Up up;
   Up down;
 
-  factory OrdListClass.fromJson(Map<String, dynamic> json) => OrdListClass(
-        up: Up.fromJson(json["up"]),
-        down: Up.fromJson(json["down"]),
+  factory OrdListClass.fromJson(Map<String, dynamic> json) {
+    if (json == null || json['error'] != null) {
+      print(
+          '-----ERROR-----  OrdListClass.fromJson ::::: $json'); //udemy_provider 프로젝트에서 사용함.
+      return OrdListClass(
+        up: Up.fromJson(null),
+        down: Up.fromJson(null),
       );
+    }
+
+    return OrdListClass(
+      up: Up.fromJson(json["up"]),
+      down: Up.fromJson(json["down"]),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "up": up.toJson(),
@@ -115,7 +151,7 @@ class Up {
   List<Map> toMapList() {
     List<Map> mapTime = [];
     time.forEach((e) {
-      print('idx ${e.idx}');
+//      print('idx ${e.idx}');
       mapTime.add({
         'idx': e.idx,
         'list': e.list,
@@ -123,13 +159,23 @@ class Up {
       });
     });
 
-    print('maptime >>>>>>>>>>>>>>  $mapTime');
+//    print('maptime >>>>>>>>>>>>>>  $mapTime');
     return mapTime;
   }
 
-  factory Up.fromJson(Map<String, dynamic> json) => Up(
-        time: List<Time>.from(json["time"].map((x) => Time.fromJson(x))),
+  factory Up.fromJson(Map<String, dynamic> json) {
+    if (json == null || json['error'] != null) {
+      print('-----ERROR-----  Up.fromJson ::::: $json');
+
+      return Up(
+        time: [Time.fromJson(null)], //어차피 널이니까. null['time']하면 에러날거같아서..
       );
+    }
+
+    return Up(
+      time: List<Time>.from(json["time"].map((x) => Time.fromJson(x))),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "time": List<dynamic>.from(time.map((x) => x.toJson())),
@@ -147,16 +193,27 @@ class Time {
   String list;
   String expList;
 
-  factory Time.fromJson(Map<String, dynamic> json) => Time(
-        idx: json["Idx"],
-        list: json["list"],
-        expList: json["expList"] == null ? null : json["expList"],
+  factory Time.fromJson(Map<String, dynamic> json) {
+    if (json == null || json['error'] != null) {
+      print('-----ERROR-----  Time.fromJson ::::: $json');
+
+      return Time(
+        idx: 99,
+        list: '',
+        expList: '',
       );
+    }
+
+    return Time(
+      idx: json["Idx"] ?? 99,
+      list: json["list"] ?? '',
+      expList: json["expList"] ?? '',
+    );
+  }
 
   Map<String, dynamic> toJson() => {
-        "Idx": idx,
-        "list": list,
-        "expList": expList == null ? null : expList,
+        "Idx": idx ?? 99,
+        "list": list ?? '',
+        "expList": expList ?? '',
       };
-
 }
