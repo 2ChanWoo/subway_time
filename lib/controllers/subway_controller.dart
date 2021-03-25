@@ -12,7 +12,7 @@ class SubwayController {
     var upResponse = await http.get(_upUrl);
 
     if (upResponse.statusCode == 200 && upResponse.body.length > 2) {
-      print('body >>>>> ${upResponse.body}');
+      //print('body >>>>> ${upResponse.body}');
       upSub = upwardSubwayFromJson(upResponse.body);
       return true;
     } else {

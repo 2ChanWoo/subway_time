@@ -62,25 +62,31 @@ class MainScreen extends StatelessWidget {
               color: Colors.purpleAccent,
               child: Text('API Test!!'),
               onPressed: () async {
-                for (int i = 133; i < 134; i++) {
+                for (int i = 155; i < 188; i++) {
                   print(i);
                   if (await cont.fetchSubwayTime(i)) {
                     String yuk = '';
-                    if(cont.upSub.result.stationName[cont.upSub.result.stationName.length-1] != '역')
+                    String sName = cont.upSub.result.stationName;
+                    if(sName[sName.length-1] != '역')
                       yuk='역';
+                    else{ //API가져온 역이름 데이터에 '역'이 붙어있을 경우.  마지막글자인 '역'제거하기!
+                       List<String> str = sName.split("");
+                       str.removeLast();
+                       sName = str.join();
+                    }
 
                     var getSubway = GeoSubways.gSubways.firstWhere((e) {
                       return e['subwayStationName'] ==
                           cont.upSub.result.stationName +
                               yuk; // bool 타입 리턴받아서 요렇게 ㅎ
                     });
-                    print('받아온 ~~~~ ${getSubway['subwayStationName']??'널?!'}');
+                    //print('받아온 ~~~~ ${getSubway['subwayStationName']??'널?!'}');
 
                     Firestore.instance
                         .collection('subways')
-                        .document(cont.upSub.result.stationName)
+                        .document(sName)
                         .setData({
-                      'stationName': cont.upSub.result.stationName,
+                      'stationName': sName,
                       'stationId': cont.upSub.result.stationId,
                       'type': cont.upSub.result.type,
                       'laneName': cont.upSub.result.laneName,
