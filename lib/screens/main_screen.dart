@@ -54,25 +54,28 @@ class MainScreen extends StatelessWidget {
                 print(response.body);
                 if (response.statusCode == 200) {
                 } else {
-                  throw Exception(
-                      '>>>>>>>>>>>> Failed to load Json <<<<<<<<<<<<<');
+                throw Exception(
+                '>>>>>>>>>>>> Failed to load Json <<<<<<<<<<<<<');
                 }
               }),
           RaisedButton(
               color: Colors.purpleAccent,
               child: Text('API Test!!'),
               onPressed: () async {
-                for (int i = 155; i < 188; i++) {
-                  print(i);
+                int cnt = 0;
+                  for (int i = 203; i < 300; i++) {
+                  print('$i and..  $cnt');
                   if (await cont.fetchSubwayTime(i)) {
+                    cnt++;
                     String yuk = '';
                     String sName = cont.upSub.result.stationName;
-                    if(sName[sName.length-1] != '역')
-                      yuk='역';
-                    else{ //API가져온 역이름 데이터에 '역'이 붙어있을 경우.  마지막글자인 '역'제거하기!
-                       List<String> str = sName.split("");
-                       str.removeLast();
-                       sName = str.join();
+                    if (sName[sName.length - 1] != '역')
+                      yuk = '역';
+                    else {
+                      //API가져온 역이름 데이터에 '역'이 붙어있을 경우.  마지막글자인 '역'제거하기!
+                      List<String> str = sName.split("");
+                      str.removeLast();
+                      sName = str.join();
                     }
 
                     var getSubway = GeoSubways.gSubways.firstWhere((e) {
@@ -84,7 +87,9 @@ class MainScreen extends StatelessWidget {
 
                     Firestore.instance
                         .collection('subways')
-                        .document(sName)
+                        .document(cont.upSub.result.laneName)
+                        .collection(sName)
+                        .document('${cont.upSub.result.stationId}')
                         .setData({
                       'stationName': sName,
                       'stationId': cont.upSub.result.stationId,
@@ -107,7 +112,8 @@ class MainScreen extends StatelessWidget {
                       'longitude': getSubway['longitude'] ?? 0.0,
                     });
                   }
-                }
+                  await Future.delayed(const Duration(milliseconds: 500), () {});
+                  }
               }),
         ],
       ),
